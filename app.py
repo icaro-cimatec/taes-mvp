@@ -1,4 +1,5 @@
-from flask import Flask, jsonify, request
+# === BACKEND: app.py ===
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
@@ -9,11 +10,12 @@ app = Flask(__name__)
 CORS(app)
 
 app.config['SECRET_KEY'] = 'segredo_devsecops'
-app.config['SECRET_KEY'] = 'segredo_devsecops'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///artesaos.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+
+# Models
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
@@ -28,12 +30,15 @@ class Product(db.Model):
     price = db.Column(db.Float)
     artisan_email = db.Column(db.String(100))
 
+# Inicialização do banco
 with app.app_context():
     db.create_all()
 
+# Mock DB
 users = []
 products = []
 
+# Rota de cadastro de artesão
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.json
@@ -58,6 +63,7 @@ def login():
     }, app.config['SECRET_KEY'], algorithm='HS256')
     return jsonify({ 'token': token })
 
+# Rota para adicionar produto
 @app.route('/api/products', methods=['POST'])
 def add_product():
     data = request.json
@@ -71,6 +77,7 @@ def add_product():
     db.session.commit()
     return jsonify({ 'message': 'Produto cadastrado com sucesso' }), 201
 
+# Rota para listar produtos
 @app.route('/api/products', methods=['GET'])
 def list_products():
     products = Product.query.all()
