@@ -30,6 +30,11 @@
   <input type="password" id="password" placeholder="Senha" />
   <button onclick="register()">Cadastrar</button>
 
+  <h2>Login</h2>
+  <input type="email" id="loginEmail" placeholder="Email" />
+  <input type="password" id="loginPassword" placeholder="Senha" />
+  <button onclick="login()">Entrar</button>
+
   <h2>Cadastrar Produto</h2>
   <input type="text" id="prodName" placeholder="Nome do Produto" />
   <input type="text" id="prodDesc" placeholder="Descrição" />
@@ -56,7 +61,28 @@
       }).then(res => res.json()).then(alerta => alert(alerta.message));
     }
 
+    function login() {
+      const data = {
+        email: document.getElementById('loginEmail').value,
+        password: document.getElementById('loginPassword').value
+      };
+      fetch('http://localhost:5000/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(res => res.json()).then(result => {
+        if (result.token) {
+          token = result.token;
+          artisanName = document.getElementById('loginEmail').value;
+          alert('Login realizado com sucesso');
+        } else {
+          alert(result.error);
+        }
+      });
+    }
+
     function addProduct() {
+      if (!token) return alert('Faça login primeiro');
       const data = {
         name: document.getElementById('prodName').value,
         description: document.getElementById('prodDesc').value,
