@@ -1,10 +1,24 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from werkzeug.security import generate_password_hash
 
 app = Flask(__name__)
 CORS(app)
 
+users = []
 products = []
+
+@app.route('/api/register', methods=['POST'])
+def register():
+    data = request.json
+    hashed_password = generate_password_hash(data['password'], method='pbkdf2')
+    users.append({
+        'name': data['name'],
+        'bio': data['bio'],
+        'email': data['email'],
+        'password': hashed_password
+    })
+    return jsonify({ 'message': 'Artesão cadastrado com sucesso' }), 201
 
 @app.route('/api/products', methods=['POST'])
 def add_product():
