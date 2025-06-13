@@ -45,7 +45,77 @@
   <div id="products"></div>
 
   <script>
+    let token = '';
+    let artisanName = '';
 
+    function register() {
+      const data = {
+        name: document.getElementById('name').value,
+        bio: document.getElementById('bio').value,
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+      };
+      fetch('http://localhost:5000/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(res => res.json()).then(alerta => alert(alerta.message));
+    }
+
+    function login() {
+      const data = {
+        email: document.getElementById('loginEmail').value,
+        password: document.getElementById('loginPassword').value
+      };
+      fetch('http://localhost:5000/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(res => res.json()).then(result => {
+        if (result.token) {
+          token = result.token;
+          artisanName = document.getElementById('loginEmail').value;
+          alert('Login realizado com sucesso');
+        } else {
+          alert(result.error);
+        }
+      });
+    }
+
+    function addProduct() {
+      if (!token) return alert('Faça login primeiro');
+      const data = {
+        name: document.getElementById('prodName').value,
+        description: document.getElementById('prodDesc').value,
+        price: document.getElementById('prodPrice').value,
+        artisan: artisanName
+      };
+      fetch('http://localhost:5000/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(res => res.json()).then(result => {
+        alert(result.message);
+        loadProducts();
+      });
+    }
+
+    function loadProducts() {
+      fetch('http://localhost:5000/api/products')
+        .then(response => response.json())
+        .then(products => {
+          const container = document.getElementById('products');
+          container.innerHTML = '';
+          products.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `<h3>${p.name}</h3><p>${p.description}</p><p>R$ ${p.price}</p><p><i>${p.artisan}</i></p>`;
+            container.appendChild(card);
+          });
+        });
+    }
+
+    window.onload = loadProducts;
   </script>
 </body>
 
