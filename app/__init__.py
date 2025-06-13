@@ -21,9 +21,13 @@ def create_app():
 
     from app.views.auth_view import auth_bp
     from app.views.product_view import product_bp
+    from app.views.comment_view import comment_bp
+    from app.views.checkout_view import checkout_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(product_bp)
+    app.register_blueprint(comment_bp)
+    app.register_blueprint(checkout_bp)
 
     with app.app_context():
         db.create_all()
