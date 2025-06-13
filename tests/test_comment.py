@@ -39,9 +39,11 @@ def test_get_comments_by_product(client, monkeypatch):
     # Mock da função que retorna comentários do produto
     mock_result = [
         type('Comment', (), {'author': 'Maria', 'content': 'Lindo', 'rating': 5})(),
-        type('Comment', (), {'author': 'Lucas', 'content': 'Bom custo-benefício', 'rating': 4})()
+        type('Comment', (), {'author': 'Lucas', 'content': 'Bom custo-benefício',
+                             'rating': 4})()
     ]
-    monkeypatch.setattr('app.views.comment_view.get_comments_by_product', lambda pid: mock_result)
+    monkeypatch.setattr('app.views.comment_view.get_comments_by_product',
+                        lambda pid: mock_result)
 
     response = client.get('/api/comments/1')
     assert response.status_code == 200
