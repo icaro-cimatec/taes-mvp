@@ -11,3 +11,7 @@ def create_product(data):
     db.session.add(product)
     db.session.commit()
     return product
+
+def get_products():
+    products = Product.query.all()
+    return [product.to_dict() for product in products]
