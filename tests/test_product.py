@@ -16,9 +16,11 @@ def client():
         with app.test_client() as client:
             yield client
 
+
 def test_add_product(client, monkeypatch):
     mock_product = type('Product', (), {'id': 1})()
-    monkeypatch.setattr('app.views.product_view.create_product', lambda data: mock_product)
+    monkeypatch.setattr('app.views.product_view.create_product',
+                        lambda data: mock_product)
 
     response = client.post('/api/products', json={
         'name': 'Produto Teste',
@@ -32,10 +34,20 @@ def test_add_product(client, monkeypatch):
     assert data["message"] == "Produto cadastrado"
     assert data["id"] == 1
 
+
 def test_get_products(client, monkeypatch):
     mock_products = [
-        {'id': 1, 'name': 'Produto 1', 'description': 'Descrição 1', 'price': 50.0, 'artisan': 'Artisan 1'},
-        {'id': 2, 'name': 'Produto 2', 'description': 'Descrição 2', 'price': 75.0, 'artisan': 'Artisan 2'}
+        {'id': 1,
+         'name': 'Produto 1',
+         'description': 'Descrição 1',
+         'price': 50.0,
+         'artisan': 'Artisan 1'},
+
+        {'id': 2,
+         'name': 'Produto 2',
+         'description': 'Descrição 2',
+         'price': 75.0,
+         'artisan': 'Artisan 2'}
     ]
     monkeypatch.setattr('app.views.product_view.get_products', lambda: mock_products)
 
