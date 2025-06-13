@@ -24,6 +24,6 @@ def get_user(data):
     token = jwt.encode({
         'email': user.email,
         'exp': datetime.datetime.now(datetime.UTC) + datetime.timedelta(hours=1)
-    }, Config.SECRET_KEY, algorithm=['HS256'])
+    }, Config.SECRET_KEY, algorithm='HS256')
 
     return token

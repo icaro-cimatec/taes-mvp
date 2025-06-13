@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Catálogo de Artesãos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    input,
+    button {
+      margin: 5px;
+    }
+
+    .product-card {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Cadastro de Artesão</h1>
+  <input type="text" id="name" placeholder="Nome" />
+  <input type="text" id="bio" placeholder="Biografia" />
+  <input type="email" id="email" placeholder="Email" />
+  <input type="password" id="password" placeholder="Senha" />
+  <button onclick="register()">Cadastrar</button>
+
+  <h2>Login</h2>
+  <input type="email" id="loginEmail" placeholder="Email" />
+  <input type="password" id="loginPassword" placeholder="Senha" />
+  <button onclick="login()">Entrar</button>
+
+  <h2>Cadastrar Produto</h2>
+  <input type="text" id="prodName" placeholder="Nome do Produto" />
+  <input type="text" id="prodDesc" placeholder="Descrição" />
+  <input type="number" id="prodPrice" placeholder="Preço" />
+  <button onclick="addProduct()">Adicionar Produto</button>
+
+  <h2>Produtos</h2>
+  <div id="products"></div>
+
+  <script>
+
+  </script>
+</body>
+
+</html>

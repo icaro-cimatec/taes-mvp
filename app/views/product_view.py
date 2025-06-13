@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.controllers.product_controller import create_product, get_products
+from app.controllers.product_controller import create_product, get_products as get_products_controller
 
 product_bp = Blueprint('product', __name__)
 
@@ -11,5 +11,5 @@ def add_product():
 
 @product_bp.route('/api/products', methods=['GET'])
 def get_products():
-    products = get_products()
+    products = get_products_controller()
     return jsonify(products), 200
