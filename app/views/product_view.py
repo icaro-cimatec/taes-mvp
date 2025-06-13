@@ -7,9 +7,9 @@ product_bp = Blueprint('product', __name__)
 def add_product():
     data = request.json
     product = create_product(data)
-    return jsonify({'message': 'Produto cadastrado', 'id': product.id})
+    return jsonify({'message': 'Produto cadastrado', 'id': product.id}), 201
 
 @product_bp.route('/api/products', methods=['GET'])
 def get_products():
     products = get_products()
-    return jsonify(products)
+    return jsonify(products), 200
