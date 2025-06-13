@@ -9,11 +9,11 @@ def register():
     user = create_user(data)
     return jsonify({'message': 'Usuário cadastrado com sucesso', 'email': user.email}), 201
 
-@auth_bp.route('/api/login', methods=['GET'])
+@auth_bp.route('/api/login', methods=['POST'])
 def login():
     data = request.json
     token = get_user(data)
     if not token:
         return jsonify({'error':'Credenciais inválidas'}), 401
     else:
-        return jsonify({'token': token})
+        return jsonify({'token': token}), 201

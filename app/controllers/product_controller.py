@@ -14,4 +14,13 @@ def create_product(data):
 
 def get_products():
     products = Product.query.all()
-    return [product.to_dict() for product in products]
+    return [
+        {
+            "id": p.id,
+            "name": p.name,
+            "description": p.description,
+            "price": p.price,
+            "artisan": p.artisan_email
+        }
+        for p in products
+    ]
