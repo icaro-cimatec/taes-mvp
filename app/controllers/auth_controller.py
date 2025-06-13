@@ -5,6 +5,7 @@ from app import db
 from app.models.user import User
 from app.config import Config
 
+
 def create_user(data):
     user = User(
         name=data['name'],
@@ -14,6 +15,7 @@ def create_user(data):
     db.session.add(user)
     db.session.commit()
     return user
+
 
 def get_user(data):
     user = User.query.filter_by(email=data['email']).first()

@@ -1,6 +1,7 @@
 from app import db
 from app.models.product import Product
 
+
 def create_product(data):
     product = Product(
         name=data['name'],
@@ -11,6 +12,7 @@ def create_product(data):
     db.session.add(product)
     db.session.commit()
     return product
+
 
 def get_products():
     products = Product.query.all()
