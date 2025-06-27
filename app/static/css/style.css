@@ -1,21 +1,31 @@
+/* Adicionar ao arquivo existente */
 body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  background-color: #f5f5f5;
 }
 
-input,
-button {
-  margin: 5px;
-}
-
-.product-card {
-  border: 1px solid #ccc;
+/* Estilos para formulários */
+input, button {
   padding: 10px;
-  margin-bottom: 10px;
+  margin: 5px 0;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #ddd;
 }
 
-.comment {
-  font-size: 0.9em;
-  margin-left: 10px;
-  color: #555;
+button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* Cards de produtos */
+.product-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  background: white;
 }
