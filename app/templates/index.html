@@ -1,34 +1,61 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <title>Catálogo de Artesãos</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-
 <body>
   <div class="container">
-    <h1>Cadastro de Artesão</h1>
-    <input type="text" id="name" placeholder="Nome" />
-    <input type="text" id="bio" placeholder="Biografia" />
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Senha" />
-    <button onclick="register()">Cadastrar</button>
+    <h1>Catálogo de Artesãos</h1>
 
-    <h2>Login</h2>
-    <input type="email" id="loginEmail" placeholder="Email" />
-    <input type="password" id="loginPassword" placeholder="Senha" />
-    <button onclick="login()">Entrar</button>
+    <div class="logged-in-only" style="text-align: right; margin-bottom: 15px;">
+      <button onclick="logout()" style="background-color: #e74c3c;">Sair</button>
+    </div>
+    
+    <section id="register-section">
+      <h2>Cadastro de Artesão</h2>
+      <div class="form-group">
+        <input type="text" id="name" placeholder="Nome">
+      </div>
+      <div class="form-group">
+        <input type="text" id="bio" placeholder="Biografia">
+      </div>
+      <div class="form-group">
+        <input type="email" id="email" placeholder="Email">
+      </div>
+      <div class="form-group">
+        <input type="password" id="password" placeholder="Senha">
+      </div>
+      <button onclick="register()">Cadastrar</button>
+    </section>
 
-    <h2>Cadastrar Produto</h2>
-    <input type="text" id="prodName" placeholder="Nome do Produto" />
-    <input type="text" id="prodDesc" placeholder="Descrição" />
-    <input type="number" id="prodPrice" placeholder="Preço" />
-    <button onclick="addProduct()">Adicionar Produto</button>
+    <section id="login-section">
+      <h2>Login</h2>
+      <div class="form-group">
+        <input type="email" id="loginEmail" placeholder="Email">
+      </div>
+      <div class="form-group">
+        <input type="password" id="loginPassword" placeholder="Senha">
+      </div>
+      <button onclick="login()">Entrar</button>
+    </section>
 
-    <section id="products-section"></section>
+    <section id="add-product-section">
+      <h2>Cadastrar Produto</h2>
+      <div class="form-group">
+        <input type="text" id="prodName" placeholder="Nome do Produto">
+      </div>
+      <div class="form-group">
+        <input type="text" id="prodDesc" placeholder="Descrição">
+      </div>
+      <div class="form-group">
+        <input type="number" id="prodPrice" placeholder="Preço">
+      </div>
+      <button onclick="addProduct()">Adicionar Produto</button>
+    </section>
+
+    <section id="products-section">
       <h2>Produtos</h2>
-      <div id="products"></div>
       <div class="filters">
         <div class="filter-group">
           <input type="text" id="search" placeholder="Pesquisar produtos..." oninput="filterProducts()">
@@ -43,12 +70,10 @@
           </select>
         </div>
       </div>
+      <div id="products"></div>
     </section>
-
-    <button onclick="checkout()">🛒 Finalizar Compra</button>
   </div>
 
   <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
-
 </html>

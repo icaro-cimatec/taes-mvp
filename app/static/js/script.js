@@ -1,7 +1,7 @@
 let token = '';
 let artisanName = '';
-let cart = [];
 
+// Funções de autenticação
 function register() {
   const data = {
     name: document.getElementById('name').value,
@@ -9,11 +9,14 @@ function register() {
     email: document.getElementById('email').value,
     password: document.getElementById('password').value
   };
+  
   fetch('http://localhost:5000/api/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
-  }).then(res => res.json()).then(alerta => alert(alerta.message));
+  })
+  .then(res => res.json())
+  .then(alerta => alert(alerta.message));
 }
 
 function login() {
@@ -21,84 +24,68 @@ function login() {
     email: document.getElementById('loginEmail').value,
     password: document.getElementById('loginPassword').value
   };
+  
   fetch('http://localhost:5000/api/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
-  }).then(res => res.json()).then(result => {
+  })
+  .then(res => res.json())
+  .then(result => {
     if (result.token) {
       token = result.token;
       artisanName = document.getElementById('loginEmail').value;
+      document.body.classList.add('logged-in');
       alert('Login realizado com sucesso');
+      loadProducts();
+      
+      // Limpar campos do formulário
+      document.getElementById('loginEmail').value = '';
+      document.getElementById('loginPassword').value = '';
     } else {
       alert(result.error);
     }
   });
 }
 
+function logout() {
+  token = '';
+  artisanName = '';
+  localStorage.removeItem('token');
+  localStorage.removeItem('artisanName');
+  document.body.classList.remove('logged-in');
+  alert('Logout realizado com sucesso');
+  loadProducts();
+}
+
+// Funções de produtos
 function addProduct() {
   if (!token) return alert('Faça login primeiro');
+  
   const data = {
     name: document.getElementById('prodName').value,
     description: document.getElementById('prodDesc').value,
     price: document.getElementById('prodPrice').value,
     artisan: artisanName
   };
+  
   fetch('http://localhost:5000/api/products', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
     body: JSON.stringify(data)
-  }).then(res => res.json()).then(result => {
+  })
+  .then(res => res.json())
+  .then(result => {
     alert(result.message);
     loadProducts();
+    // Limpa os campos do formulário
+    document.getElementById('prodName').value = '';
+    document.getElementById('prodDesc').value = '';
+    document.getElementById('prodPrice').value = '';
   });
-}
-
-function addToCart(productId) {
-  cart.push({ id: productId });
-  localStorage.setItem("cart", JSON.stringify(cart));
-  alert("Produto adicionado ao carrinho");
-}
-
-function checkout() {
-  const storedCart = JSON.parse(localStorage.getItem("cart") || "[]");
-  fetch("http://localhost:5000/api/checkout", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ cart: storedCart })
-  }).then(r => r.json()).then(d => {
-    alert(d.message);
-    localStorage.removeItem("cart");
-    cart = [];
-  });
-}
-
-function submitComment(event, productId) {
-  event.preventDefault();
-  const author = event.target.querySelector(".comment-author").value;
-  const content = event.target.querySelector(".comment-content").value;
-  const rating = event.target.querySelector(".comment-rating").value;
-
-  fetch("http://localhost:5000/api/comments", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ product_id: productId, author, content, rating })
-  }).then(res => res.json()).then(res => {
-    alert(res.message);
-    loadProducts();
-  });
-}
-
-function loadComments(productId) {
-  fetch(`http://localhost:5000/api/comments/${productId}`)
-    .then(r => r.json())
-    .then(comments => {
-      const div = document.getElementById(`comments-${productId}`);
-      div.innerHTML = "<h4>Avaliações:</h4>";
-      comments.forEach(c => {
-        div.innerHTML += `<div class="comment"><b>${c.author}</b>: ${c.content} ⭐${c.rating}</div>`;
-      });
-    });
 }
 
 function loadProducts() {
@@ -164,7 +151,50 @@ function displayProducts(products) {
   });
 }
 
+// Funções de comentários
+function submitComment(event, productId) {
+  event.preventDefault();
+  const author = event.target.querySelector(".comment-author").value;
+  const content = event.target.querySelector(".comment-content").value;
+  const rating = event.target.querySelector(".comment-rating").value;
+
+  fetch("http://localhost:5000/api/comments", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ product_id: productId, author, content, rating })
+  })
+  .then(res => res.json())
+  .then(res => {
+    alert(res.message);
+    loadComments(productId);
+    // Limpa o formulário de comentário
+    event.target.querySelector(".comment-author").value = '';
+    event.target.querySelector(".comment-content").value = '';
+    event.target.querySelector(".comment-rating").value = '';
+  });
+}
+
+function loadComments(productId) {
+  fetch(`http://localhost:5000/api/comments/${productId}`)
+    .then(r => r.json())
+    .then(comments => {
+      const div = document.getElementById(`comments-${productId}`);
+      div.innerHTML = "<h4>Avaliações:</h4>";
+      comments.forEach(c => {
+        div.innerHTML += `<div class="comment"><b>${c.author}</b>: ${c.content} ⭐${c.rating}</div>`;
+      });
+    });
+}
+
 // Carrega os produtos quando a página é carregada
 window.onload = function() {
+  // Verificar se já está logado
+  const storedToken = localStorage.getItem('token');
+  if (storedToken) {
+    token = storedToken;
+    artisanName = localStorage.getItem('artisanName');
+    document.body.classList.add('logged-in');
+  }
+  
   loadProducts();
 };
