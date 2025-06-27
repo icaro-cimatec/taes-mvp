@@ -26,8 +26,24 @@
     <input type="number" id="prodPrice" placeholder="Preço" />
     <button onclick="addProduct()">Adicionar Produto</button>
 
-    <h2>Produtos</h2>
-    <div id="products"></div>
+    <section id="products-section"></section>
+      <h2>Produtos</h2>
+      <div id="products"></div>
+      <div class="filters">
+        <div class="filter-group">
+          <input type="text" id="search" placeholder="Pesquisar produtos..." oninput="filterProducts()">
+        </div>
+        <div class="filter-group">
+          <select id="price-filter" onchange="filterProducts()">
+            <option value="">Todos os preços</option>
+            <option value="0-50">Até R$50</option>
+            <option value="50-100">R$50 a R$100</option>
+            <option value="100-500">R$100 a R$500</option>
+            <option value="500+">Acima de R$500</option>
+          </select>
+        </div>
+      </div>
+    </section>
 
     <button onclick="checkout()">🛒 Finalizar Compra</button>
   </div>
