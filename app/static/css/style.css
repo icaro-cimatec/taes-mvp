@@ -1,0 +1,21 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+input,
+button {
+  margin: 5px;
+}
+
+.product-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.comment {
+  font-size: 0.9em;
+  margin-left: 10px;
+  color: #555;
+}
